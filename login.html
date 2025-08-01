@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Secure Access Portal</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <style>
+    :root {
+      --primary-color: #E4002B;
+      --primary-dark: #231F20;
+      --secondary-color: #FFC72C;
+      --accent-color: #FFC72C;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --success-color: #4bb543;
+      --error-color: #ff3333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--dark-color);
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .login-header {
+      background-color: #E4002B;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .login-header h1 {
+      font-weight: 600;
+      margin-bottom: 5px;
+      font-size: 24px;
+    }
+
+    .login-header p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .login-form {
+      padding: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .input-with-icon {
+      position: relative;
+    }
+
+    .input-with-icon i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-color);
+      font-size: 16px;
+    }
+
+    .input-with-icon input {
+      width: 100%;
+      padding: 12px 15px 12px 45px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .input-with-icon input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      outline: none;
+    }
+
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+
+    .forgot-password a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .error-message {
+      color: var(--error-color);
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        margin: 0 15px;
+      }
+
+      .login-form {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <h1>Secure Access Portal</h1>
+      <p>Please authenticate to continue</p>
+    </div>
+
+    <form class="login-form" id="loginForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <div class="input-with-icon">
+          <i class="fas fa-user"></i>
+          <input type="password" id="username" class="form-control" required />
+        </div>
+        <div class="error-message" id="username-error">Username is incorrect</div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-with-icon">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" class="form-control" required />
+        </div>
+        <div class="error-message" id="password-error">Password is incorrect</div>
+      </div>
+
+      <div class="remember-forgot">
+        <div class="forgot-password">
+          <a href="forgot.html">Forgot password?</a>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="loginBtn">Sign In</button>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const loginForm = document.getElementById('loginForm');
+      const username = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const usernameError = document.getElementById('username-error');
+      const passwordError = document.getElementById('password-error');
+
+      loginForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        usernameError.style.display = 'none';
+        passwordError.style.display = 'none';
+
+        let isValid = true;
+
+        if (username.value.trim().toLowerCase() !== 'admin') {
+          usernameError.style.display = 'block';
+          isValid = false;
+        }
+
+        if (passwordInput.value !== '12345') {
+          passwordError.style.display = 'block';
+          isValid = false;
+        }
+
+        if (isValid) {
+          const loginBtn = document.getElementById('loginBtn');
+          loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+          loginBtn.disabled = true;
+
+          setTimeout(function () {
+            sessionStorage.setItem('authenticated', 'true');
+            window.location.href = 'logs.html';
+          }, 1500);
+        }
+      });
+
+      username.addEventListener('blur', function () {
+        usernameError.style.display = this.value.trim().toLowerCase() !== 'admin' ? 'block' : 'none';
+      });
+
+      passwordInput.addEventListener('blur', function () {
+        passwordError.style.display = this.value !== '12345' ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

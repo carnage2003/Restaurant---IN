@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Recovery | Secure Access Portal</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-color: white;
+            --dark-color: #212529;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--dark-color);
+        }
+
+        .recovery-container {
+            
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: none;
+            overflow: hidden;
+        }
+
+        .recovery-header {
+            background-color: white;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .recovery-header h1 {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        .recovery-header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .recovery-content {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .recovery-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .contact-list {
+            margin: 30px 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .contact-icon {
+            margin-right: 15px;
+            color: var(--primary-color);
+            font-size: 24px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .contact-details {
+            flex: 1;
+        }
+
+        .contact-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .contact-info {
+            font-size: 15px;
+            color: #555;
+        }
+
+        .support-hours {
+            font-size: 14px;
+            color: #666;
+            margin-top: 30px;
+            font-style: italic;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        @media (max-width: 480px) {
+            .recovery-container {
+                margin: 0 15px;
+            }
+            
+            .recovery-content {
+                padding: 20px;
+            }
+            
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="recovery-container">
+        <div class="recovery-header">
+            <h1>Password Recovery Assistance</h1>
+            <p>Contact our support team to reset your password</p>
+        </div>
+        
+        <div class="recovery-content">
+            <div class="recovery-icon">
+                <i class="fas fa-key"></i>
+            </div>
+            
+            <h2>Need help accessing your account?</h2>
+            <p>Our support team is ready to assist you with password recovery.</p>
+            
+            <div class="contact-list">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-title">Management Director</div>
+                        <div class="contact-info">+1 (888) 555-1001</div>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-title">Branch Manager</div>
+                        <div class="contact-info">+1 (888) 555-1002</div>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-title">Technical Support</div>
+                        <div class="contact-info">+44 20 1234 5678 <br>+61 2 1234 5678</div>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-title">Email Support</div>
+                        <div class="contact-info">password-support@company.com</div>
+                    </div>
+                </div>
+            </div>
+            
+           
+            
+            <a href="login.html" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Return to Login
+            </a>
+        </div>
+    </div>
+</body>
+</html>

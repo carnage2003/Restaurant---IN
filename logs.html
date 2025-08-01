@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Sales Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2c5282;
+      --secondary: #4a5568;
+      --accent: #3182ce;
+      --text: #2d3748;
+      --text-light: #718096;
+      --bg: #f7fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --success: #38a169;
+      --warning: #dd6b20;
+      --error: #e53e3e;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 0;
+    }
+
+    .app-container {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: var(--primary);
+      color: white;
+      padding: 1.5rem 1rem;
+      position: fixed;
+      width: 240px;
+      height: 100vh;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background-color: white;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .brand-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 6px;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover {
+      background-color: rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    .nav-item.active {
+      background-color: rgba(255,255,255,0.15);
+      color: white;
+    }
+
+    .nav-item i {
+      width: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .main-content {
+      grid-column: 2;
+      padding: 2rem;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .data-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--primary);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-light);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      color: var(--text-light);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+      background-color: var(--card-bg);
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: rgba(226, 232, 240, 0.3);
+    }
+
+    .summary-row {
+      font-weight: 500;
+      background-color: rgba(247, 250, 252, 0.8);
+    }
+
+    .summary-row td {
+      padding: 1rem;
+    }
+
+    .status-bar {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background-color: var(--card-bg);
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+    }
+
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--success);
+    }
+
+    @media (max-width: 1024px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .main-content {
+        grid-column: 1;
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">QR</div>
+        <div class="brand-name">Sales Activities<br>Log</div>
+      </div>
+      <!-- <nav class="nav-menu">
+        <a href="#" class="nav-item active">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Sales</span>
+        </a>
+      </nav> -->
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="header">
+        <h1 class="page-title">Sales Transactions</h1>
+      </div>
+
+      <!-- Transactions Card -->
+      <div class="data-card">
+        <div class="card-header">
+          <!-- <h2 class="card-title">Today's Sales Activity</h2> -->
+          <div class="card-actions">
+            <!-- <button class="btn btn-primary">
+              <i class="fas fa-plus"></i>
+              New Sale
+            </button> -->
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Item Name</th>
+              <th>Unit Price (Rs.)</th>
+              <th>Transaction Time</th>
+              <th>Transaction Date</th>
+            </tr>
+          </thead>
+          <tbody id="log-body">
+            <!-- Logs will be injected here -->
+          </tbody>
+          <tfoot>
+            <tr class="summary-row">
+              <td colspan="3" style="text-align: right; font-weight: 600;">Daily Total:</td>
+              <td style="font-weight: 600;">Rs. <span id="daily-total">0.00</span></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-indicator"></div>
+    <div>System connected</div>
+    <div style="color: var(--text-light);">•</div>
+    <div>Last updated: <span id="current-time"></span></div>
+  </div>
+
+  <script>
+    const logs = [
+      { code: "FD-001", item: "Chicken Burger", price: 5.99, timestamp: "2025-07-31 12:45:00" },
+      { code: "FD-002", item: "Veggie Wrap", price: 4.50, timestamp: "2025-07-31 13:15:22" },
+      { code: "FD-003", item: "Combo Meal", price: 9.75, timestamp: "2025-07-31 14:05:11" },
+      { code: "FD-004", item: "French Fries", price: 2.99, timestamp: "2025-07-31 14:22:33" },
+      { code: "FD-005", item: "Soft Drink", price: 1.50, timestamp: "2025-07-31 15:10:45" },
+      { code: "FD-006", item: "Chicken Nuggets", price: 3.99, timestamp: "2025-07-31 15:45:18" },
+      { code: "FD-007", item: "Ice Cream", price: 2.25, timestamp: "2025-07-31 16:30:07" }
+    ];
+
+    const tbody = document.getElementById('log-body');
+    let dailyTotal = 0;
+
+    logs.forEach(log => {
+      const [date, time] = log.timestamp.split(' ');
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${log.item}</td>
+        <td>${log.price.toFixed(2)}</td>
+        <td>${time}</td>
+        <td>${date}</td>
+      `;
+      tbody.appendChild(row);
+      dailyTotal += log.price;
+    });
+
+    document.getElementById('daily-total').textContent = dailyTotal.toFixed(2);
+    document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+
+    setInterval(() => {
+      document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+
+      if (Math.random() > 0.9) {
+        const tableBody = document.querySelector('tbody');
+        const newRow = document.createElement('tr');
+
+        const items = [
+          { code: 'FD-008', name: 'Cheese Pizza', price: 7.50 },
+          { code: 'FD-009', name: 'Garden Salad', price: 5.25 },
+          { code: 'FD-010', name: 'Chocolate Shake', price: 3.75 }
+        ];
+
+        const randomItem = items[Math.floor(Math.random() * items.length)];
+        const now = new Date();
+        const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const dateString = now.toISOString().split('T')[0];
+
+        newRow.innerHTML = `
+          <td>${randomItem.name}</td>
+          <td>${randomItem.price.toFixed(2)}</td>
+          <td>${timeString}</td>
+          <td>${dateString}</td>
+        `;
+
+        tableBody.insertBefore(newRow, tableBody.firstChild);
+        dailyTotal += randomItem.price;
+        document.getElementById('daily-total').textContent = dailyTotal.toFixed(2);
+      }
+    }, 10000);
+  </script>
+</body>
+</html>

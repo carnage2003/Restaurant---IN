@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TASTY LEGS - Burgers Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --kfc-red: #E4002B;
+      --kfc-dark: #231F20;
+      --kfc-light: #FFFFFF;
+      --kfc-yellow: #FFC72C;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--kfc-light);
+      color: var(--kfc-dark);
+      padding-bottom: 80px;
+    }
+    
+    header {
+      padding: 20px;
+      background-color: var(--kfc-red);
+      color: white;
+      position: relative;
+      text-align: center;
+    }
+    
+    .logo {
+      font-family: 'Inter', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: white;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .logo::before {
+      content: "🍗";
+      font-size: 32px;
+    }
+    
+    .back-btn {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .search-bar {
+      position: relative;
+      margin-top: 15px;
+    }
+    
+    .search-bar input {
+      width: 100%;
+      padding: 12px 15px;
+      border: none;
+      border-radius: 25px;
+      font-size: 14px;
+      background-color: rgba(255,255,255,0.9);
+      outline: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .section-title {
+      padding: 15px;
+      margin-bottom: 5px;
+    }
+    
+    .section-title h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--kfc-red);
+      position: relative;
+      padding-bottom: 8px;
+    }
+    
+    .section-title h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 60px;
+      height: 3px;
+      background-color: var(--kfc-red);
+    }
+    
+    .menu-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      padding: 15px;
+    }
+    
+    .menu-item {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #f0f0f0;
+    }
+    
+    .menu-item:hover, .menu-item.selected {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(228, 0, 43, 0.2);
+      border: 1px solid var(--kfc-red);
+    }
+    
+    .menu-item-img {
+      width: 100%;
+      height: 120px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    
+    .menu-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    
+    .menu-item:hover img {
+      transform: scale(1.05);
+    }
+    
+    .menu-item h4 {
+      margin: 0 0 5px;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--kfc-dark);
+    }
+    
+    .menu-item .price {
+      color: var(--kfc-red);
+      font-size: 18px;
+      font-weight: 800;
+      text-align: center;
+    }
+    
+    .quantity-controls {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .menu-item.selected .quantity-controls {
+      display: flex;
+    }
+    
+    .quantity-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--kfc-red);
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    
+    .buy-btn-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10;
+    }
+    
+    .buy-btn {
+      background: var(--kfc-red);
+      color: white;
+      border: none;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(228, 0, 43, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.2s;
+    }
+    
+    .buy-btn:hover {
+      background: #c10024;
+      transform: scale(1.05);
+    }
+    
+    .item-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: white;
+      color: var(--kfc-red);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      border: 2px solid var(--kfc-red);
+      font-weight: bold;
+    }
+    
+    .kfc-stripes {
+      height: 5px;
+      background: repeating-linear-gradient(45deg, var(--kfc-red), var(--kfc-red) 10px, var(--kfc-yellow) 10px, var(--kfc-yellow) 20px);
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="test.html" class="back-btn">← Back</a>
+  </header>
+
+  <div class="section-title">
+    <h2>Burgers Menu</h2>
+  </div>
+
+  <div class="menu-container" id="burgersMenu">
+    <!-- Burgers will be inserted here by JavaScript -->
+  </div>
+
+  <div class="buy-btn-container">
+    <button class="buy-btn" onclick="window.location.href='buy.html'">
+      <div class="item-count" id="itemCount">0</div>
+      ORDER
+    </button>
+  </div>
+
+  <script>
+    // Burgers Menu Data
+    const burgers = [
+      { name: 'Zinger Burger', price: 'Rs. 850', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80', description: 'Crispy chicken fillet with spicy mayo' },
+      { name: 'Cheese Burger', price: 'Rs. 750', img: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80', description: 'Juicy chicken patty with melted cheese' },
+      { name: 'Spicy Burger', price: 'Rs. 900', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80', description: 'Extra spicy chicken with special sauce' },
+      { name: 'Double Burger', price: 'Rs. 1100', img: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80', description: 'Double chicken patty with double cheese' },
+      { name: 'Chicken Wrap', price: 'Rs. 750', img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80', description: 'Grilled chicken in soft tortilla wrap' },
+      { name: 'Veggie Burger', price: 'Rs. 650', img: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80', description: 'Vegetarian option with fresh veggies' },
+      { name: 'BBQ Burger', price: 'Rs. 950', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80', description: 'Smoky BBQ flavored chicken burger' },
+      { name: 'Supreme Burger', price: 'Rs. 1200', img: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80', description: 'Our signature burger with all toppings' }
+    ];
+
+    let selectedItems = [];
+    let totalItems = 0;
+
+    function renderMenu() {
+      const container = document.getElementById('burgersMenu');
+      container.innerHTML = '';
+      
+      burgers.forEach((item, index) => {
+        const itemId = `burger-${index}`;
+        const isSelected = selectedItems.some(i => i.id === itemId);
+        
+        container.innerHTML += `
+          <div class="menu-item ${isSelected ? 'selected' : ''}" data-id="${itemId}" data-price="${item.price.replace('Rs. ', '')}">
+            <div class="menu-item-img">
+              <img src="${item.img}" alt="${item.name}" />
+            </div>
+            <h4>${item.name}</h4>
+            <div class="price">${item.price}</div>
+            <div class="quantity-controls">
+              <button class="quantity-btn minus">-</button>
+              <span class="quantity">${isSelected ? selectedItems.find(i => i.id === itemId).quantity : 1}</span>
+              <button class="quantity-btn plus">+</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function updateItemCount() {
+      document.getElementById('itemCount').textContent = totalItems;
+    }
+
+    function attachMenuEvents() {
+      document.querySelectorAll('.menu-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+          if (e.target.classList.contains('quantity-btn')) return;
+          
+          const itemId = this.getAttribute('data-id');
+          const itemName = this.querySelector('h4').textContent;
+          const itemPrice = parseInt(this.getAttribute('data-price'));
+          const itemImg = this.querySelector('img').src;
+          
+          const existingItemIndex = selectedItems.findIndex(item => item.id === itemId);
+          
+          if (existingItemIndex >= 0) {
+            totalItems -= selectedItems[existingItemIndex].quantity;
+            selectedItems.splice(existingItemIndex, 1);
+            this.classList.remove('selected');
+          } else {
+            selectedItems.push({
+              id: itemId,
+              name: itemName,
+              price: itemPrice,
+              img: itemImg,
+              quantity: 1
+            });
+            totalItems += 1;
+            this.classList.add('selected');
+          }
+          
+          updateItemCount();
+        });
+      });
+      
+      document.querySelectorAll('.quantity-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          
+          const card = this.closest('.menu-item');
+          const itemId = card.getAttribute('data-id');
+          const quantityElement = card.querySelector('.quantity');
+          let quantity = parseInt(quantityElement.textContent);
+          const itemIndex = selectedItems.findIndex(item => item.id === itemId);
+          
+          if (this.classList.contains('minus')) {
+            if (quantity > 1) {
+              quantity--;
+              totalItems--;
+              selectedItems[itemIndex].quantity = quantity;
+              quantityElement.textContent = quantity;
+            } else {
+              totalItems -= selectedItems[itemIndex].quantity;
+              selectedItems.splice(itemIndex, 1);
+              card.classList.remove('selected');
+            }
+          } else if (this.classList.contains('plus')) {
+            quantity++;
+            totalItems++;
+            selectedItems[itemIndex].quantity = quantity;
+            quantityElement.textContent = quantity;
+          }
+          
+          updateItemCount();
+        });
+      });
+    }
+
+    function initialize() {
+      renderMenu();
+      attachMenuEvents();
+      
+      document.querySelector('.buy-btn').addEventListener('click', function() {
+        if (selectedItems.length > 0) {
+          alert(`Order placed for ${totalItems} burgers! Total: Rs. ${selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)}`);
+        } else {
+          alert('Please select at least one burger');
+        }
+      });
+    }
+
+    initialize();
+  </script>
+</body>
+</html>
