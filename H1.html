@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KFC Style - Chicken Delivery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --kfc-red: #E4002B;
+      --kfc-dark: #231F20;
+      --kfc-light: #FFFFFF;
+      --kfc-yellow: #FFC72C;
+    }
+    
+    body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #ffe3e3;
+        color: #333;
+      }
+    .top-banner {
+        background-color: #E4002B;
+        color: white;
+        text-align: center;
+        padding: 12px 0;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 25px;
+        margin-bottom: 0.5pc;
+        border-radius: 25px;
+        
+      }
+      
+      .top-banner .emoji {
+        font-size: 20px;
+        margin-right: 8px;
+      }
+      
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--kfc-light);
+      color: var(--kfc-dark);
+      padding-bottom: 0;
+    }
+    
+    header {
+      padding: 20px;
+      background-color: var(--kfc-red);
+      color: white;
+      position: relative;
+      text-align: center;
+      z-index: 101;
+    }
+    
+    .logo {
+      font-family: 'Inter', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: white;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .logo::before {
+      content: "🍗";
+      font-size: 32px;
+    }
+    
+    .search-bar {
+      position: relative;
+      margin-top: 15px;
+    }
+    
+    .search-bar input {
+      width: 100%;
+      padding: 12px 15px;
+      border: none;
+      border-radius: 25px;
+      font-size: 14px;
+      background-color: rgba(255,255,255,0.9);
+      outline: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+        padding: 10px 5px;
+      }
+      
+      @media (max-width: 480px) {
+        .grid-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      
+    
+    .categories {
+        display: flex;
+        gap: 8px;
+        padding: 15px;
+        overflow-x: auto;
+        background: white;
+        border-bottom: 1px solid #f0f0f0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    
+    .category {
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      background: #f5f5f5;
+      color: var(--kfc-dark);
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .category.active {
+      background: var(--kfc-red);
+      color: white;
+      border-color: var(--kfc-red);
+    }
+    .categories-scroll-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 20px;
+        padding-bottom: 10px;
+      }
+    
+      .category {
+        scroll-snap-align: start;
+        min-width: 90%;
+        flex: 0 0 auto;
+      }
+    
+      @media (min-width: 600px) {
+        .category {
+          min-width: 70%;
+        }
+      }
+    
+      @media (min-width: 900px) {
+        .category {
+          min-width: 50%;
+        }
+      }
+    
+      .categories-scroll-container::-webkit-scrollbar {
+        display: none;
+      }
+    
+    .section {
+      padding: 0 15px;
+      margin-bottom: 25px;
+    }
+    
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 0 5px;
+    }
+    
+    .section-title h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--kfc-red);
+      position: relative;
+    }
+    
+    .section-title h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 40px;
+      height: 3px;
+      background-color: var(--kfc-red);
+    }
+    
+    .section-title a {
+      color: var(--kfc-dark);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    
+    .scroll-container {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      padding-top: 5px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--kfc-red) #f0f0f0;
+    }
+    
+    .scroll-container::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .scroll-container::-webkit-scrollbar-track {
+      background: #f0f0f0;
+      border-radius: 10px;
+    }
+    
+    .scroll-container::-webkit-scrollbar-thumb {
+      background-color: var(--kfc-red);
+      border-radius: 10px;
+    }
+    
+    /* Best Sellers Special Styling */
+    #specialOffers .card {
+      border: 2px solid var(--kfc-yellow);
+      position: relative;
+    }
+   
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      min-width: 160px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      flex: 0 0 auto;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #f0f0f0;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(228, 0, 43, 0.2);
+      border: 1px solid var(--kfc-red);
+    }
+    
+    .card-img-container {
+      width: 100%;
+      height: 120px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    
+    .card:hover img {
+      transform: scale(1.05);
+    }
+    
+    .card h4 {
+      margin: 0 0 5px;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--kfc-dark);
+    }
+    
+    .card .price {
+      color: var(--kfc-red);
+      font-size: 16px;
+      font-weight: 800;
+      text-align: center;
+    }
+    
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .edit-btn, .delete-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.3s;
+      border: none;
+    }
+    
+    .edit-btn {
+      background-color: #FFA500;
+      color: white;
+    }
+    
+    .delete-btn {
+      background-color: #E4002B;
+      color: white;
+    }
+    
+    .edit-btn:hover {
+      background-color: #e69500;
+    }
+    
+    .delete-btn:hover {
+      background-color: #c10024;
+    }
+
+    /* Edit Popup Styles */
+    .edit-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+    
+    .edit-popup.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .edit-popup-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+    
+    .edit-popup h3 {
+      margin-top: 0;
+      color: var(--kfc-red);
+    }
+    
+    .edit-popup label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    
+    .edit-popup input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+    
+    .edit-popup-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    
+    .edit-popup-buttons button {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    
+    .save-btn {
+      background-color: var(--kfc-red);
+      color: white;
+    }
+    
+    .cancel-btn {
+      background-color: #ddd;
+      color: #333;
+    }
+    
+    .img-preview {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 480px) {
+      .card {
+        min-width: 140px;
+      }
+      
+      .card-img-container {
+        height: 100px;
+      }
+    }
+
+  </style>
+</head>
+<body id="All">
+  <header>
+    <div class="top-banner">
+        <span class="emoji">🍗</span> <strong>TASTY LEGS <br><center>- Your menu -</center></strong>
+      </div>
+  </header>
+
+  <div class="categories">
+    <div class="category active" onclick="redirectToCategory('All')">All</div>
+    <div class="category" onclick="redirectToCategory('specialOffers')">Special Offers</div>
+    <div class="category" onclick="redirectToCategory('Chicken Buckets')">Chicken Buckets</div>
+    <div class="category" onclick="redirectToCategory('Burgers & wraps')">Burgers & Wraps</div>
+    <div class="category" onclick="redirectToCategory('Rice & Meals')">Rice & Meals</div>
+    <div class="category" onclick="redirectToCategory('Sides & Snacks')">Sides & Snacks</div>
+    <div class="category" onclick="redirectToCategory('Desserts')">Desserts</div>
+  </div>
+
+  <div class="section" id="specialOffers">
+    <div class="section-title">
+      <h2>Special Offers</h2>
+    </div>
+    <div class="grid-container" id="specialOffersContainer"></div>
+  </div>
+  
+
+  <div class="section" id="Chicken Buckets">
+    <div class="section-title">
+      <h2>Chicken Buckets</h2>
+    </div>
+    <div class="scroll-container" id="buckets"></div>
+  </div>
+
+  <div class="section" id="Burgers & wraps">
+    <div class="section-title">
+      <h2>Burgers & Wraps</h2>
+    </div>
+    <div class="scroll-container" id="burgers"></div>
+  </div>
+
+  <div class="section" id="Rice & Meals">
+    <div class="section-title">
+      <h2>Rice & Meals</h2>
+    </div>
+    <div class="scroll-container" id="riceMeals"></div>
+  </div>
+
+  <div class="section" id="Sides & Snacks">
+    <div class="section-title">
+      <h2>Sides & Snacks</h2>
+    </div>
+    <div class="scroll-container" id="sides"></div>
+  </div>
+
+  <div class="section" id="Desserts">
+    <div class="section-title">
+      <h2>Desserts</h2>
+    </div>
+    <div class="scroll-container" id="desserts"></div>
+  </div>
+
+  <!-- Edit Popup -->
+  <div class="edit-popup" id="editPopup">
+    <div class="edit-popup-content">
+      <h3>Edit Item</h3>
+      <img id="editImgPreview" class="img-preview" src="" alt="Preview">
+      <label for="editName">Name:</label>
+      <input type="text" id="editName">
+      <label for="editPrice">Price:</label>
+      <input type="text" id="editPrice">
+      <label for="editImage">Image:</label>
+      <input type="file" id="editImage" accept="image/*">
+      <div class="edit-popup-buttons">
+        <button class="cancel-btn" id="cancelEdit">Cancel</button>
+        <button class="save-btn" id="saveEdit">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Menu data
+    const specialOffers = [
+      { 
+        name: 'Family Feast Deal', price: 'Rs. 3500', img: 'https://images.unsplash.com/photo-1606755456206-b25206bfa433?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      },
+      { 
+        name: 'Bucket + Burger Combo', price: 'Rs. 2200', img: 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      },
+      { 
+        name: 'Weekend Special', price: 'Rs. 1800', img: 'https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      },
+      { 
+        name: 'Student Meal Deal',  price: 'Rs. 1200',  img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      }
+    ];
+
+    const buckets = [
+      { name: '3pc Chicken Bucket', price: 'Rs. 1500', img: 'https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: '5pc Chicken Bucket', price: 'Rs. 2000', img: 'https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: '8pc Chicken Bucket', price: 'Rs. 2500', img: 'https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: '10pc Chicken Bucket', price: 'Rs. 3200', img: 'https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Family Bucket', price: 'Rs. 4000', img: 'https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' }
+    ];
+
+    const burgers = [
+      { name: 'Zinger Burger', price: 'Rs. 850', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Cheese Burger', price: 'Rs. 750', img: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Chicken Wrap', price: 'Rs. 750', img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Spicy Burger', price: 'Rs. 900', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Double Burger', price: 'Rs. 1100', img: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' }
+    ];
+
+    const riceMeals = [
+      { name: 'Chicken Rice Bowl', price: 'Rs. 800', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Fried Rice Meal', price: 'Rs. 850', img: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Chicken & Fries', price: 'Rs. 900', img: 'https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Chicken Pasta', price: 'Rs. 950', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Meal Box', price: 'Rs. 1000', img: 'https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' }
+    ];
+
+    const sides = [
+      { name: 'French Fries', price: 'Rs. 400', img: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Coleslaw', price: 'Rs. 300', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Potato Wedges', price: 'Rs. 450', img: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Chicken Nuggets', price: 'Rs. 500', img: 'https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Mashed Potato', price: 'Rs. 350', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' }
+    ];
+
+    const desserts = [
+      { name: 'Chocolate Lava Cake', price: 'Rs. 550', img: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Strawberry Cheesecake', price: 'Rs. 600', img: 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' },
+      { name: 'Ice Cream Sundae', price: 'Rs. 450', img: 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80' }
+    ];
+
+    // Store menu data by category
+    const menuData = {
+      specialOffers: specialOffers,
+      buckets: buckets,
+      burgers: burgers,
+      riceMeals: riceMeals,
+      sides: sides,
+      desserts: desserts
+    };
+
+    let currentEditItem = null;
+    let currentEditCategory = null;
+    let currentEditIndex = null;
+
+  function renderItems(containerId, items, isSpecialOffer = false) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+
+    items.forEach((item, index) => {
+      const category = containerId;
+      container.innerHTML += `
+        <div class="card">
+          <div class="card-img-container">
+            <img src="${item.img}" alt="${item.name}" />
+          </div>
+          <h4>${item.name}</h4>
+          <div class="price">${item.price}</div>
+          <div class="action-buttons">
+            <button class="edit-btn" data-category="${category}" data-index="${index}">✎</button>
+            <button class="delete-btn" data-category="${category}" data-index="${index}">✖</button>
+          </div>
+        </div>
+      `;
+    });
+
+    bindActionButtons(); // Rebind buttons every time after rendering
+  }
+
+  function bindActionButtons() {
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const category = this.getAttribute('data-category');
+        const index = parseInt(this.getAttribute('data-index'));
+        const item = menuData[category][index];
+        showEditPopup(item, category, index);
+      });
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const category = this.getAttribute('data-category');
+        const index = parseInt(this.getAttribute('data-index'));
+        deleteItem(category, index);
+      });
+    });
+  }
+
+  function showEditPopup(item, category, index) {
+    currentEditItem = item;
+    currentEditCategory = category;
+    currentEditIndex = index;
+
+    document.getElementById('editName').value = item.name;
+    document.getElementById('editPrice').value = item.price;
+    document.getElementById('editImgPreview').src = item.img;
+
+    document.getElementById('editPopup').classList.add('active');
+  }
+
+  function saveEditedItem() {
+    const name = document.getElementById('editName').value.trim();
+    const price = document.getElementById('editPrice').value.trim();
+    const imgPreview = document.getElementById('editImgPreview');
+
+    if (!name || !price) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    currentEditItem.name = name;
+    currentEditItem.price = price;
+    currentEditItem.img = imgPreview.src;
+
+    menuData[currentEditCategory][currentEditIndex] = currentEditItem;
+
+    const containerId = currentEditCategory;
+    renderItems(containerId, menuData[currentEditCategory], currentEditCategory === 'specialOffers');
+
+    document.getElementById('editPopup').classList.remove('active');
+  }
+  function deleteItem(category, index) {
+    const mapping = {
+      "specialOffers": "specialOffers",
+      "Chicken Buckets": "buckets",
+      "Burgers & wraps": "burgers",
+      "Rice & Meals": "riceMeals",
+      "Sides & Snacks": "sides",
+      "Desserts": "desserts"
+    };
+  
+    const dataKey = mapping[category];
+    if (!dataKey || !menuData[dataKey]) return;
+  
+    menuData[dataKey].splice(index, 1);
+  
+    renderItems(category, menuData[dataKey], category === "specialOffers");
+  }
+  
+
+  function initialize() {
+    renderItems('specialOffers', menuData.specialOffers, true);
+    renderItems('buckets', menuData.buckets);
+    renderItems('burgers', menuData.burgers);
+    renderItems('riceMeals', menuData.riceMeals);
+    renderItems('sides', menuData.sides);
+    renderItems('desserts', menuData.desserts);
+
+    document.getElementById('editImage').addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          document.getElementById('editImgPreview').src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById('saveEdit').addEventListener('click', saveEditedItem);
+
+    document.getElementById('cancelEdit').addEventListener('click', function () {
+      document.getElementById('editPopup').classList.remove('active');
+    });
+
+    document.querySelectorAll('.category').forEach(category => {
+      category.addEventListener('click', function () {
+        document.querySelector('.category.active').classList.remove('active');
+        this.classList.add('active');
+      });
+    });
+  }
+
+  window.addEventListener('scroll', function () {
+    const header = document.querySelector('header');
+    const categories = document.querySelector('.categories');
+    categories.style.boxShadow = window.scrollY > header.offsetHeight ? '0 2px 10px rgba(0,0,0,0.1)' : 'none';
+  });
+
+  function redirectToCategory(category) {
+    const section = document.getElementById(category);
+    if (section) {
+      const yOffset = -80;
+      const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }
+
+  initialize();
+  </script>
+</body>
+</html>

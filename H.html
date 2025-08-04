@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #ffe3e3;
+      color: #333;
+    }
+
+    .top-banner {
+        background-color: #E4002B;
+        color: white;
+        text-align: center;
+        padding: 12px 0;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 25px;
+        margin-bottom: 2pc;
+      }
+      
+      .top-banner .emoji {
+        font-size: 20px;
+        margin-right: 8px;
+      }
+      
+
+    .category {
+      margin-bottom: 40px;
+      background-color: #fff;
+      border-radius: 16px;
+      padding: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .category-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #E4002B;
+      margin: 10px 0 15px;
+      border-bottom: 3px solid #E4002B;
+      padding-bottom: 8px;
+      display: inline-block;
+    }
+    
+    .special-offers .category-title {
+      color: #FF6B00;
+      border-bottom-color: #FF6B00;
+    }
+    
+    .best-sellers .category-title {
+      color: #FFD700;
+      border-bottom-color: #FFD700;
+    }
+
+    .item-grid {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 10px;
+    }
+
+    .item-card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      width: calc(50% - 8px);
+      text-align: center;
+      transition: transform 0.3s ease;
+      position: relative;
+      
+    }
+    .item-card {
+        width: 30%;
+        background: #ffefef;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        overflow: hidden;
+        display: flex;
+        flex-direction:column;
+        justify-content: space-between;
+        transition: transform 0.3s;
+      }
+      
+      .item-card img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+      }
+      
+      .item-card .item-info {
+        padding: 10px;
+        font-size: 14px;
+      }
+      
+      .item-card .item-info h4 {
+        font-size: 15px;
+        margin: 5px 0;
+      }
+      
+      .item-card .item-info p {
+        font-size: 12px;
+        color: #666;
+      }
+      
+      /* Mobile view fix */
+      @media (max-width: 768px) {
+        .item-grid {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          justify-content: center;
+        }
+      
+        .item-card {
+          width: 90%;
+          margin: 0 auto;
+        }
+      
+        .item-card img {
+          height: 100px;
+        }
+      
+        .item-card .item-info {
+          padding: 8px;
+          font-size: 13px;
+        }
+      
+        .item-card .item-info h4 {
+          font-size: 14px;
+        }
+      
+        .item-card .item-info p {
+          font-size: 11px;
+        }
+      }
+      
+    .special-offers .item-card {
+      border: 2px solid #FF6B00;
+    }
+    
+    .best-sellers .item-card {
+      border: 2px solid #FFD700;
+    }
+    
+    .special-tag {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #FF6B00;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .best-seller-tag {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #FFD700;
+      color: #333;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .item-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .item-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-bottom: 1px solid #eee;
+    }
+
+    .item-info {
+      padding: 12px 10px;
+    }
+
+    .item-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 5px 0;
+      color: #222;
+    }
+    
+    .item-desc {
+      font-size: 12px;
+      color: #666;
+      margin: 5px 0 8px;
+      line-height: 1.4;
+    }
+
+    .item-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: #E4002B;
+      margin-bottom: 5px;
+    }
+    
+    .special-offers .item-price {
+      color: #FF6B00;
+    }
+    
+    .best-sellers .item-price {
+      color: #E4002B;
+    }
+    
+    .original-price {
+      text-decoration: line-through;
+      color: #999;
+      font-size: 14px;
+      margin-right: 5px;
+    }
+    
+    .veg-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background-color: #4CAF50;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+    
+    .non-veg-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background-color: #E4002B;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    @media (min-width: 600px) {
+      .item-card {
+        width: calc(33.33% - 10px);
+      }
+    }
+    
+    @media (min-width: 900px) {
+      .item-card {
+        width: calc(25% - 12px);
+      }
+      
+      body {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+    }
+    
+    .spicy::after {
+      content: "🌶️";
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+
+    <div class="top-banner">
+        <span class="emoji">🍗</span> <strong>TASTY LEGS <br><center>- Your menu -</center></strong>
+      </div>
+      
+
+  <script>
+    const menuData = {
+      bestSellers: [
+        { 
+          name: 'Fries', 
+          price: 'Rs. 400', 
+          originalPrice: 'Rs. 500',
+          img: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+          veg: null
+        },
+        { 
+          name: 'Beef Burger', 
+          price: 'Rs. 850', 
+          img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+          spicy: true
+        },
+        { 
+          name: 'Cheese Pizza', 
+          price: 'Rs. 1200', 
+          originalPrice: 'Rs. 1500',
+          img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+          veg: true
+        }
+      ],
+      specialOfers: [
+        
+        
+      ],
+      chickenBuckets: [
+        { 
+          name: '3pc Chicken Bucket', 
+          price: 'Rs. 1500', 
+          img: 'https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+        },
+        { 
+          name: '5pc Chicken Bucket', 
+          price: 'Rs. 2000', 
+          img: 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+        },
+        { 
+          name: 'Hot & Spicy Bucket', 
+          price: 'Rs. 2200', 
+          img: 'https://images.unsplash.com/photo-1610056494036-8e7a0b3a0c1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+          spicy: true
+        },
+        { 
+          name: 'Family Feast Bucket', 
+          price: 'Rs. 3200', 
+          img: 'https://images.unsplash.com/photo-1606755456206-b25206bfa433?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+        }
+      ],
+      burgersWraps: [
+        { 
+          name: 'Zinger Burger', 
+          price: 'Rs. 850', 
+          img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+          spicy: true
+        },
+        { 
+          name: 'Cheese Burger', 
+          price: 'Rs. 750', 
+          img: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+        },
+        { 
+          name: 'Chicken Wrap', 
+          price: 'Rs. 700', 
+          img: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+        },
+        { 
+          name: 'Garden Veggie Burger', 
+          price: 'Rs. 650', 
+          img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+          veg: true
+        }
+      ],
+      riceMeals: [
+        { 
+          name: 'Chicken Biryani', 
+          price: 'Rs. 950', 
+          img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+        },
+        { 
+          name: 'Special Fried Rice', 
+          price: 'Rs. 1000', 
+          img: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+        },
+        { 
+          name: 'Grilled Chicken Meal', 
+          price: 'Rs. 1200', 
+          img: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+        },
+        { 
+          name: 'Vegetable Pulao', 
+          price: 'Rs. 800', 
+          img: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+          veg: true
+        }
+      ],
+      desserts: [
+        { 
+          name: 'Chocolate Lava Cake', 
+          price: 'Rs. 550', 
+          img: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+          veg: true
+        },
+        { 
+          name: 'Strawberry Cheesecake', 
+          price: 'Rs. 600', 
+          img: 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+          veg: true
+        }
+      ]
+    };
+
+    function renderMenu() {
+        const menuContainer = document.body;
+        renderCategory(menuContainer, 'bestSellers', 'Best Sellers', 'best-sellers');
+        renderCategory(menuContainer, 'chickenBuckets', 'Chicken Buckets');
+        renderCategory(menuContainer, 'burgersWraps', 'Burgers & Wraps');
+        renderCategory(menuContainer, 'riceMeals', 'Rice & Meals');
+        renderCategory(menuContainer, 'desserts', 'Desserts');
+      }
+    
+      function renderCategory(container, dataKey, title, specialClass = '') {
+        const category = document.createElement('div');
+        category.className = `category ${specialClass}`;
+    
+        const categoryTitle = document.createElement('div');
+        categoryTitle.className = 'category-title';
+        categoryTitle.textContent = title;
+        category.appendChild(categoryTitle);
+    
+        const itemGrid = document.createElement('div');
+        itemGrid.className = 'item-grid';
+    
+        menuData[dataKey].forEach(item => {
+          const itemCard = createItemCard(item, specialClass, itemGrid);
+          itemGrid.appendChild(itemCard);
+        });
+    
+        // Add new item blank card
+        const addCard = document.createElement('div');
+        addCard.className = 'item-card';
+        addCard.style.display = 'flex';
+        addCard.style.alignItems = 'center';
+        addCard.style.justifyContent = 'center';
+        addCard.style.cursor = 'pointer';
+        addCard.innerHTML = "<strong style='font-size:24px;'>＋</strong>";
+        addCard.title = "Add New Item";
+        addCard.onclick = () => {
+          const newItem = { name: '', price: '', img: '', };
+          const itemCard = createItemCard(newItem, specialClass, itemGrid, true);
+          itemGrid.insertBefore(itemCard, addCard);
+        };
+        itemGrid.appendChild(addCard);
+    
+        category.appendChild(itemGrid);
+        container.appendChild(category);
+      }
+    
+      function createItemCard(item, specialClass, container, isNew = false) {
+        const itemCard = document.createElement('div');
+        itemCard.className = 'item-card';
+    
+        if (item.tag) {
+          const tag = document.createElement('div');
+          tag.className = specialClass === 'best-sellers' ? 'best-seller-tag' : 'special-tag';
+          tag.textContent = item.tag;
+          itemCard.appendChild(tag);
+        }
+    
+        const img = document.createElement('img');
+        img.src = item.img || 'https://via.placeholder.com/150';
+        img.alt = item.name;
+        itemCard.appendChild(img);
+    
+        const itemInfo = document.createElement('div');
+        itemInfo.className = 'item-info';
+    
+        const itemName = document.createElement('div');
+        itemName.className = 'item-name';
+        if (item.spicy) itemName.classList.add('spicy');
+    
+        const indicator = document.createElement('span');
+        indicator.className = item.veg ? 'veg-indicator' : 'non-veg-indicator';
+        itemName.appendChild(indicator);
+        itemName.appendChild(document.createTextNode(item.name));
+        itemInfo.appendChild(itemName);
+    
+        const itemDesc = document.createElement('div');
+        itemDesc.className = 'item-desc';
+        itemDesc.textContent = item.desc || '';
+        itemInfo.appendChild(itemDesc);
+    
+        const itemPrice = document.createElement('div');
+        itemPrice.className = 'item-price';
+        if (item.originalPrice) {
+          const originalPrice = document.createElement('span');
+          originalPrice.className = 'original-price';
+          originalPrice.textContent = item.originalPrice;
+          itemPrice.appendChild(originalPrice);
+        }
+        itemPrice.appendChild(document.createTextNode(item.price));
+        itemInfo.appendChild(itemPrice);
+    
+        // DELETE button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = '✖';
+        deleteBtn.style.position = 'absolute';
+        deleteBtn.style.top = '8px';
+        deleteBtn.style.left = '8px';
+        deleteBtn.style.background = '#E4002B';
+        deleteBtn.style.color = 'white';
+        deleteBtn.style.border = 'none';
+        deleteBtn.style.borderRadius = '50%';
+        deleteBtn.style.width = '24px';
+        deleteBtn.style.height = '24px';
+        deleteBtn.style.cursor = 'pointer';
+        deleteBtn.style.fontSize = '14px';
+        deleteBtn.title = 'Remove item';
+        deleteBtn.addEventListener('click', () => itemCard.remove());
+        itemCard.appendChild(deleteBtn);
+    
+        // EDIT button
+        const editBtn = document.createElement('button');
+        editBtn.textContent = '✎';
+        editBtn.style.position = 'absolute';
+        editBtn.style.top = '8px';
+        editBtn.style.right = '8px';
+        editBtn.style.background = '#FFA500';
+        editBtn.style.color = 'white';
+        editBtn.style.border = 'none';
+        editBtn.style.borderRadius = '50%';
+        editBtn.style.width = '24px';
+        editBtn.style.height = '24px';
+        editBtn.style.cursor = 'pointer';
+        editBtn.style.fontSize = '14px';
+        editBtn.title = 'Edit item';
+        editBtn.onclick = () => showEditPopup(item, img, itemName, itemPrice);
+        itemCard.appendChild(editBtn);
+    
+        itemCard.appendChild(itemInfo);
+        return itemCard;
+      }
+    
+      function showEditPopup(item, imgElement, nameElement, priceElement) {
+        const popup = document.createElement('div');
+        popup.style.position = 'fixed';
+        popup.style.top = '50%';
+        popup.style.left = '50%';
+        popup.style.transform = 'translate(-50%, -50%)';
+        popup.style.background = 'white';
+        popup.style.padding = '20px';
+        popup.style.border = '2px solid #E4002B';
+        popup.style.borderRadius = '12px';
+        popup.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)';
+        popup.style.zIndex = '9999';
+      
+        // Add preview image
+        popup.innerHTML = `
+          <h3>Edit Item</h3>
+          <label>Name:</label><br>
+          <input type="text" id="edit-name" value="${item.name}" style="width:100%; margin-bottom:10px;"><br>
+          <label>Price:</label><br>
+          <input type="text" id="edit-price" value="${item.price}" style="width:100%; margin-bottom:10px;"><br>
+          <label>Image:</label><br>
+          <input type="file" id="edit-img" accept="image/*" style="width:100%; margin-bottom:10px;"><br>
+          <img id="edit-img-preview" src="${item.img || 'https://via.placeholder.com/150'}" style="width:150px; display:block; margin-bottom:10px; border:1px solid #ccc; border-radius:8px;" alt="Preview">
+          <button id="saveEdit" style="background:#4CAF50;color:white;padding:5px 10px;margin-right:10px;">Save</button>
+          <button id="cancelEdit" style="background:#aaa;color:white;padding:5px 10px;">Cancel</button>
+        `;
+      
+        document.body.appendChild(popup);
+      
+        const fileInput = popup.querySelector('#edit-img');
+        const imgPreview = popup.querySelector('#edit-img-preview');
+        const nameInput = popup.querySelector('#edit-name');
+        const priceInput = popup.querySelector('#edit-price');
+      
+        // Live preview when file selected
+        fileInput.addEventListener('change', () => {
+          const file = fileInput.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              imgPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+          } else {
+            imgPreview.src = item.img || 'https://via.placeholder.com/150';
+          }
+        });
+      
+        popup.querySelector('#cancelEdit').onclick = () => popup.remove();
+      
+        popup.querySelector('#saveEdit').onclick = () => {
+          const newName = nameInput.value.trim();
+          const newPrice = priceInput.value.trim();
+      
+          if (!newName || !newPrice) {
+            alert("Name and price cannot be empty.");
+            return;
+          }
+      
+          item.name = newName;
+          item.price = newPrice;
+      
+          const file = fileInput.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              item.img = e.target.result;
+              imgElement.src = item.img;
+            };
+            reader.readAsDataURL(file);
+          } else {
+            imgElement.src = item.img || 'https://via.placeholder.com/150';
+          }
+      
+          // Clear existing children and rebuild nameElement
+          nameElement.innerHTML = '';
+          const dotSpan = document.createElement('span');
+          dotSpan.className = item.veg ? 'veg-indicator' : 'non-veg-indicator';
+          nameElement.appendChild(dotSpan);
+          nameElement.appendChild(document.createTextNode(item.name));
+      
+          priceElement.textContent = item.price;
+      
+          popup.remove();
+        };
+      }
+      
+    
+      document.addEventListener('DOMContentLoaded', renderMenu);
+    
+  </script>
+
+</body>
+</html>

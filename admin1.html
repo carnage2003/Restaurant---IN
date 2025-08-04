@@ -1,0 +1,401 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu Management Dashboard</title>
+  <style>
+    :root {
+      --primary-color: #E4002B;
+      --primary-dark: #231F20;
+      --secondary-color: #FFC72C;
+      --accent-color: #FFC72C;
+      --light-color: #faf8f8;
+      --dark-color: #212529;
+      --success-color: #4bb543;
+      --error-color: #ff3333;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+      --rounded-sm: 6px;
+      --rounded: 10px;
+      --rounded-lg: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--light-color);
+      color: var(--primary-dark);
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    #logo{
+      text-align: center;
+      background-color: #c70024;
+      color:white;
+      padding-top:2pc;
+      padding-bottom: 0.45pc;
+      padding-left: 0.4pc;
+      padding-right: 0.4pc;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0 0 24px;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      letter-spacing: -0.5px;
+    }
+
+    .container {
+      display: grid;
+      gap: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .panel {
+      background: #fff;
+      padding: 24px;
+      border-radius: var(--rounded-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--gray-200);
+      border-color: #FFC72C;
+    }
+
+    .panel h3 {
+      margin: 0 0 20px;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel h3::before {
+      content: "";
+      display: block;
+      width: 6px;
+      height: 20px;
+      background: var(--primary-color);
+      border-radius: 3px;
+    }
+
+    form label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--primary-dark);
+      margin-bottom: 6px;
+    }
+
+    form input,
+    form select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--rounded-sm);
+      font-size: 0.9375rem;
+      transition: all 0.2s ease;
+    }
+
+    form input:focus,
+    form select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(228, 0, 43, 0.1);
+    }
+
+    form input[type="file"] {
+      padding: 8px;
+    }
+
+    form input[type="file"]::file-selector-button {
+      padding: 8px 12px;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-300);
+      border-radius: var(--rounded-sm);
+      font-size: 0.875rem;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: all 0.2s;
+    }
+
+    form input[type="file"]::file-selector-button:hover {
+      background: var(--gray-200);
+    }
+
+    form button {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: var(--rounded-sm);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 8px;
+    }
+
+    form button:hover {
+      background: #c70024;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    form button:active {
+      transform: translateY(0);
+    }
+
+    .item-list {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 16px;
+    }
+
+    .item-card {
+      background: #fff;
+      border-radius: var(--rounded);
+      box-shadow: var(--shadow-sm);
+      padding: 12px;
+      text-align: center;
+      border: 1px solid var(--gray-200);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .item-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .item-card img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: var(--rounded-sm);
+      margin-bottom: 12px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .item-card p {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-card p span {
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+
+    .special-info {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--secondary-color);
+      color: black;
+      padding: 2px 6px;
+      border-radius: var(--rounded-sm);
+      font-size: 0.75rem;
+    }
+
+    #offerPopup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      padding: 20px;
+      border-radius: var(--rounded);
+      box-shadow: var(--shadow-lg);
+      z-index: 1000;
+      display: none;
+      width: 300px;
+    }
+
+    #offerPopup select,
+    #offerPopup input {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 10px;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--rounded-sm);
+    }
+
+    #offerPopup button {
+      width: 100%;
+      padding: 10px;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: var(--rounded-sm);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.3);
+      z-index: 999;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <br>
+  <h2 id="logo">XYZ Restaurant</h2>
+  <br>
+  <h1>Web Page settings</h1>
+  <div class="container">
+    <div class="panel">
+      <form id="menuForm">
+        <label>Item Name</label>
+        <input type="text" id="itemName" placeholder="e.g. Chicken Wings" required />
+
+        <label>Price</label>
+        <input type="number" id="itemPrice" placeholder="e.g. 12.99" required />
+
+        <label>Item Image</label>
+        <input type="file" id="itemImage" accept="image/*" required />
+
+        <label>Category</label>
+        <select id="itemCategory">
+          <option value="buckets">Chicken Buckets</option>
+          <option value="meals">Meals</option>
+        </select>
+
+        <button type="submit">Add Item</button>
+      </form>
+    </div>
+
+    <div class="panel">
+   
+      <div id="itemList" class="item-list"></div>
+    </div>
+  </div>
+
+  <div id="overlay"></div>
+  <div id="offerPopup">
+    <select id="offerNumber">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
+    <input type="number" id="discountPercent" placeholder="Discount %" />
+    <button id="applyOffer">Apply Offer</button>
+    <button id="removeOffer" style="margin-top:10px;background:var(--error-color)">Remove Offer</button>
+  </div>
+
+  <script>
+    const form = document.getElementById('menuForm');
+    const itemList = document.getElementById('itemList');
+    const offerPopup = document.getElementById('offerPopup');
+    const overlay = document.getElementById('overlay');
+    const offerNumber = document.getElementById('offerNumber');
+    const discountPercent = document.getElementById('discountPercent');
+    const applyOffer = document.getElementById('applyOffer');
+    const removeOffer = document.getElementById('removeOffer');
+
+    const offerMap = {};
+    let currentTarget = null;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('itemName').value;
+      const price = document.getElementById('itemPrice').value;
+      const image = document.getElementById('itemImage').files[0];
+
+      if (!image) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const item = document.createElement('div');
+        item.className = 'item-card';
+        item.innerHTML = `
+          <img src="${e.target.result}" alt="${name}" />
+          <p>${name} <span>- Rs.${price}</span></p>
+        `;
+
+        item.addEventListener('dblclick', () => {
+          currentTarget = item;
+          offerPopup.style.display = 'block';
+          overlay.style.display = 'block';
+        });
+
+        itemList.appendChild(item);
+      };
+      reader.readAsDataURL(image);
+
+      form.reset();
+    });
+
+    applyOffer.addEventListener('click', () => {
+      const number = offerNumber.value;
+      const discount = discountPercent.value;
+
+      if (offerMap[number]) {
+        alert(`Offer number ${number} already used. Remove it first.`);
+        return;
+      }
+
+      removeOfferFromItem(currentTarget);
+
+      const tag = document.createElement('div');
+      tag.className = 'special-info';
+      tag.textContent = `#${number} - ${discount}%`;
+      currentTarget.appendChild(tag);
+
+      offerMap[number] = currentTarget;
+
+      closePopup();
+    });
+
+    removeOffer.addEventListener('click', () => {
+      removeOfferFromItem(currentTarget);
+      closePopup();
+    });
+
+    function removeOfferFromItem(item) {
+      const tag = item.querySelector('.special-info');
+      if (tag) {
+        const num = tag.textContent.match(/#(\d)/);
+        if (num) delete offerMap[num[1]];
+        tag.remove();
+      }
+    }
+
+    function closePopup() {
+      offerPopup.style.display = 'none';
+      overlay.style.display = 'none';
+      discountPercent.value = '';
+    }
+  </script>
+</body>
+</html>
