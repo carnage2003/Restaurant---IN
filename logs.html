@@ -39,6 +39,22 @@
       padding: 0;
     }
 
+    /* 👇 Add this inside your <style> block or CSS section */
+.table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+/* Optionally style the scrollbar for mobile */
+.table-wrapper::-webkit-scrollbar {
+  height: 6px;
+}
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+
     .app-container {
       display: grid;
       grid-template-columns: 240px 1fr;
@@ -53,6 +69,7 @@
       width: 240px;
       height: 100vh;
       z-index: 10;
+      overflow-y: auto;
     }
 
     .brand {
@@ -120,6 +137,7 @@
     .main-content {
       grid-column: 2;
       padding: 2rem;
+      overflow-x: auto;
     }
 
     .header {
@@ -135,6 +153,38 @@
       color: var(--primary);
     }
 
+    .time-period-selector {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .time-period-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid var(--border);
+      background-color: var(--card-bg);
+      color: var(--text-light);
+      white-space: nowrap;
+    }
+
+    .time-period-btn:hover {
+      background-color: var(--bg);
+    }
+
+    .time-period-btn.active {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
     .data-card {
       background-color: var(--card-bg);
       border-radius: 8px;
@@ -142,6 +192,7 @@
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border);
       margin-bottom: 2rem;
+      overflow-x: auto;
     }
 
     .card-header {
@@ -188,6 +239,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 0.85rem;
+      min-width: 600px;
     }
 
     th {
@@ -234,6 +286,7 @@
       gap: 0.5rem;
       font-size: 0.85rem;
       border: 1px solid var(--border);
+      z-index: 20;
     }
 
     .status-indicator {
@@ -243,6 +296,15 @@
       background-color: var(--success);
     }
 
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
     @media (max-width: 1024px) {
       .app-container {
         grid-template-columns: 1fr;
@@ -250,11 +312,72 @@
 
       .sidebar {
         display: none;
+        width: 100%;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        
+      }
+
+      .sidebar.active {
+        display: block;
+        transform: translateX(0);
       }
 
       .main-content {
         grid-column: 1;
         padding: 1.5rem;
+      }
+
+      
+      .header {
+        margin-bottom: 1.5rem;
+      }
+
+      .page-title {
+        font-size: 1.3rem;
+      }
+
+      .data-card {
+        padding: 1rem;
+      }
+
+      th, td {
+        padding: 0.75rem;
+      }
+
+      .status-bar {
+        bottom: 0.5rem;
+        right: 0.5rem;
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .main-content {
+        padding: 1rem;
+      }
+
+      .time-period-selector {
+        gap: 0.25rem;
+      }
+
+      .time-period-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+      }
+
+      .page-title {
+        font-size: 1.2rem;
+      }
+
+      th, td {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+      }
+
+      .summary-row td {
+        padding: 0.75rem 0.5rem;
       }
     }
   </style>
@@ -262,44 +385,45 @@
 <body>
   <div class="app-container">
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
       <div class="brand">
         <div class="brand-icon">QR</div>
         <div class="brand-name">Sales Activities<br>Log</div>
       </div>
-      <!-- <nav class="nav-menu">
-        <a href="#" class="nav-item active">
-          <i class="fas fa-shopping-cart"></i>
-          <span>Sales</span>
-        </a>
-      </nav> -->
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
       <div class="header">
+        <button class="mobile-menu-btn" id="menuBtn">
+          <i class="fas fa-bars"></i>
+        </button>
         <h1 class="page-title">Sales Transactions</h1>
+      </div>
+
+      <!-- Time Period Selector -->
+      <div class="time-period-selector">
+        <button class="time-period-btn active" data-period="today">Today</button>
+        <button class="time-period-btn" data-period="week">This Week</button>
+        <button class="time-period-btn" data-period="month">This Month</button>
+        <button class="time-period-btn" data-period="year">This Year</button>
+        <button class="time-period-btn" data-period="all">All Time</button>
       </div>
 
       <!-- Transactions Card -->
       <div class="data-card">
         <div class="card-header">
-          <!-- <h2 class="card-title">Today's Sales Activity</h2> -->
-          <div class="card-actions">
-            <!-- <button class="btn btn-primary">
-              <i class="fas fa-plus"></i>
-              New Sale
-            </button> -->
-          </div>
+          <div class="card-actions"></div>
         </div>
 
-        <table>
+        <div class="table-wrapper">
+          <table>
           <thead>
             <tr>
               <th>Item Name</th>
-              <th>Unit Price (Rs.)</th>
-              <th>Transaction Time</th>
-              <th>Transaction Date</th>
+              <th>Price (Rs.)</th>
+              <th>Time</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody id="log-body">
@@ -307,8 +431,8 @@
           </tbody>
           <tfoot>
             <tr class="summary-row">
-              <td colspan="3" style="text-align: right; font-weight: 600;">Daily Total:</td>
-              <td style="font-weight: 600;">Rs. <span id="daily-total">0.00</span></td>
+              <td colspan="3" style="text-align: right; font-weight: 600;">Total:</td>
+              <td style="font-weight: 600;">Rs. <span id="total-amount">0.00</span></td>
             </tr>
           </tfoot>
         </table>
@@ -325,65 +449,166 @@
   </div>
 
   <script>
-    const logs = [
+    // Sample data with more dates for demonstration
+    const allLogs = [
       { code: "FD-001", item: "Chicken Burger", price: 5.99, timestamp: "2025-07-31 12:45:00" },
       { code: "FD-002", item: "Veggie Wrap", price: 4.50, timestamp: "2025-07-31 13:15:22" },
       { code: "FD-003", item: "Combo Meal", price: 9.75, timestamp: "2025-07-31 14:05:11" },
       { code: "FD-004", item: "French Fries", price: 2.99, timestamp: "2025-07-31 14:22:33" },
       { code: "FD-005", item: "Soft Drink", price: 1.50, timestamp: "2025-07-31 15:10:45" },
       { code: "FD-006", item: "Chicken Nuggets", price: 3.99, timestamp: "2025-07-31 15:45:18" },
-      { code: "FD-007", item: "Ice Cream", price: 2.25, timestamp: "2025-07-31 16:30:07" }
+      { code: "FD-007", item: "Ice Cream", price: 2.25, timestamp: "2025-07-31 16:30:07" },
+      { code: "FD-008", item: "Cheese Pizza", price: 7.50, timestamp: "2025-07-30 11:20:15" },
+      { code: "FD-009", item: "Garden Salad", price: 5.25, timestamp: "2025-07-30 12:45:30" },
+      { code: "FD-010", item: "Chocolate Shake", price: 3.75, timestamp: "2025-07-29 14:15:22" },
+      { code: "FD-011", item: "Hot Dog", price: 4.25, timestamp: "2025-07-28 13:30:45" },
+      { code: "FD-012", item: "Onion Rings", price: 3.50, timestamp: "2025-07-27 15:20:10" },
+      { code: "FD-013", item: "Fish Sandwich", price: 6.75, timestamp: "2025-07-15 12:10:30" },
+      { code: "FD-014", item: "Milk Shake", price: 4.50, timestamp: "2025-07-10 16:45:20" },
+      { code: "FD-015", item: "Bacon Cheeseburger", price: 8.25, timestamp: "2025-06-25 13:15:45" },
+      { code: "FD-016", item: "Caesar Salad", price: 7.25, timestamp: "2025-06-20 14:30:15" },
+      { code: "FD-017", item: "Apple Pie", price: 3.25, timestamp: "2025-05-15 15:45:30" },
+      { code: "FD-018", item: "Coffee", price: 2.00, timestamp: "2025-04-10 10:15:20" },
+      { code: "FD-019", item: "Chicken Wings", price: 8.50, timestamp: "2025-03-05 17:30:45" },
+      { code: "FD-020", item: "Vegetable Soup", price: 4.75, timestamp: "2025-02-20 12:45:10" }
     ];
 
     const tbody = document.getElementById('log-body');
-    let dailyTotal = 0;
+    const totalAmountEl = document.getElementById('total-amount');
+    const timePeriodBtns = document.querySelectorAll('.time-period-btn');
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    let currentPeriod = 'today';
 
-    logs.forEach(log => {
-      const [date, time] = log.timestamp.split(' ');
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${log.item}</td>
-        <td>${log.price.toFixed(2)}</td>
-        <td>${time}</td>
-        <td>${date}</td>
-      `;
-      tbody.appendChild(row);
-      dailyTotal += log.price;
+    // Mobile menu toggle
+    menuBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
     });
 
-    document.getElementById('daily-total').textContent = dailyTotal.toFixed(2);
-    document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && e.target !== menuBtn) {
+        sidebar.classList.remove('active');
+      }
+    });
 
+    // Function to filter logs based on time period
+    function filterLogs(period) {
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const weekStart = new Date(today);
+      weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      const yearStart = new Date(now.getFullYear(), 0, 1);
+
+      return allLogs.filter(log => {
+        const logDate = new Date(log.timestamp);
+        
+        if (period === 'today') {
+          return logDate >= today;
+        } else if (period === 'week') {
+          return logDate >= weekStart;
+        } else if (period === 'month') {
+          return logDate >= monthStart;
+        } else if (period === 'year') {
+          return logDate >= yearStart;
+        } else { // all time
+          return true;
+        }
+      });
+    }
+
+    // Function to render logs
+    function renderLogs(period) {
+      const filteredLogs = filterLogs(period);
+      tbody.innerHTML = '';
+      let total = 0;
+
+      filteredLogs.forEach(log => {
+        const [date, time] = log.timestamp.split(' ');
+        const shortTime = time.substring(0, 5); // Show only hours:minutes
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${log.item}</td>
+          <td>${log.price.toFixed(2)}</td>
+          <td>${shortTime}</td>
+          <td>${date}</td>
+        `;
+        tbody.appendChild(row);
+        total += log.price;
+      });
+
+      totalAmountEl.textContent = total.toFixed(2);
+    }
+
+    // Initialize with today's logs
+    renderLogs(currentPeriod);
+
+    // Time period button click handlers
+    timePeriodBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        timePeriodBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentPeriod = btn.dataset.period;
+        renderLogs(currentPeriod);
+        
+        // Close sidebar on mobile after selection
+        if (window.innerWidth <= 1024) {
+          sidebar.classList.remove('active');
+        }
+      });
+    });
+
+    // Update current time
+    function updateCurrentTime() {
+      const now = new Date();
+      document.getElementById('current-time').textContent = now.toLocaleTimeString([], { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true 
+      });
+    }
+    updateCurrentTime();
+    setInterval(updateCurrentTime, 1000);
+
+    // Simulate new transactions
     setInterval(() => {
-      document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
-
       if (Math.random() > 0.9) {
-        const tableBody = document.querySelector('tbody');
-        const newRow = document.createElement('tr');
-
         const items = [
-          { code: 'FD-008', name: 'Cheese Pizza', price: 7.50 },
-          { code: 'FD-009', name: 'Garden Salad', price: 5.25 },
-          { code: 'FD-010', name: 'Chocolate Shake', price: 3.75 }
+          { code: 'FD-021', name: 'Cheese Pizza', price: 7.50 },
+          { code: 'FD-022', name: 'Garden Salad', price: 5.25 },
+          { code: 'FD-023', name: 'Chocolate Shake', price: 3.75 },
+          { code: 'FD-024', name: 'BBQ Ribs', price: 12.99 },
+          { code: 'FD-025', name: 'Grilled Cheese', price: 4.50 }
         ];
 
         const randomItem = items[Math.floor(Math.random() * items.length)];
         const now = new Date();
         const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const dateString = now.toISOString().split('T')[0];
+        const timestamp = `${dateString} ${timeString}:00`;
 
-        newRow.innerHTML = `
-          <td>${randomItem.name}</td>
-          <td>${randomItem.price.toFixed(2)}</td>
-          <td>${timeString}</td>
-          <td>${dateString}</td>
-        `;
+        // Add to allLogs
+        allLogs.unshift({
+          code: randomItem.code,
+          item: randomItem.name,
+          price: randomItem.price,
+          timestamp: timestamp
+        });
 
-        tableBody.insertBefore(newRow, tableBody.firstChild);
-        dailyTotal += randomItem.price;
-        document.getElementById('daily-total').textContent = dailyTotal.toFixed(2);
+        // Re-render if we're showing today's logs
+        if (currentPeriod === 'today') {
+          renderLogs(currentPeriod);
+        }
       }
     }, 10000);
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 1024) {
+        sidebar.classList.remove('active');
+      }
+    });
   </script>
 </body>
 </html>

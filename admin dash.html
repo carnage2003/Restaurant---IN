@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - QR Food Ordering</title>
+    <style>
+        /* Global Styles */
+        :root {
+          --primary: #E4002B;
+          --dark: #231F20;
+          --light: #FFFFFF;
+          --accent: #FFC72C;
+          --gray: #6c757d;
+          --light-gray: #f8f9fa;
+          --success: #28a745;
+          --warning: #ffc107;
+          --danger: #dc3545;
+          --info: #17a2b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('restaurant-kitchen.jpg');
+            background-size: cover;
+            background-position: center;
+            color: var(--light);
+            padding: 1rem 2rem;
+            text-align: center;
+            height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo { 
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        /* Navigation Styles */
+        .admin-nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: var(--dark);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-nav-links {
+            display: flex;
+        }
+
+        .admin-nav a {
+            color: var(--light);
+            text-decoration: none;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .admin-nav a:hover {
+            background-color: var(--primary);
+        }
+
+        .admin-nav a.active {
+            background-color: var(--primary);
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            color: var(--light);
+        }
+
+        .admin-user img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        /* Sidebar and Main Content Layout */
+        .admin-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 250px);
+        }
+
+        /* Sidebar Styles */
+        .admin-sidebar {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 1.5rem 1rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #555;
+            color: var(--accent);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link {
+            display: block;
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.8rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: var(--primary);
+        }
+
+        .sidebar-link i {
+            width: 20px;
+            text-align: center;
+            margin-right: 0.5rem;
+        }
+
+        /* Main Content Styles */
+        .admin-main {
+            padding: 2rem;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: -1rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--dark);
+        }
+
+        .btn {
+            padding: 0.7rem 1.2rem;
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background-color: #c10022;
+        }
+
+        .btn-secondary {
+            background-color: var(--gray);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-info {
+            background-color: var(--info);
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .card-stats {
+            font-size: 0.8rem;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+        }
+
+        .card-stats i {
+            margin-right: 0.3rem;
+        }
+
+        .card-stats.down {
+            color: var(--danger);
+        }
+
+        /* Tables */
+        .admin-table-container {
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--dark);
+            background-color: var(--light-gray);
+        }
+
+        .status {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            min-width: 90px;
+            text-align: center;
+        }
+
+        .status-pending {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+
+        .status-preparing {
+            background-color: rgba(23, 162, 184, 0.1);
+            color: var(--info);
+        }
+
+        .status-ready {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .status-delivered {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: var(--gray);
+        }
+
+        .status-cancelled {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Forms */
+        .admin-form {
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--light);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--dark);
+        }
+
+        .logout-btn {
+            background-color: var(--danger);
+            color: var(--light);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 1rem;
+            transition: background-color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        /* Order Details */
+        .order-details {
+            margin-bottom: 1.5rem;
+        }
+
+        .order-details p {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .order-items {
+            width: 100%;
+            margin-top: 1rem;
+            border-collapse: collapse;
+        }
+
+        .order-items th {
+            background-color: var(--light-gray);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .order-items td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+
+        .order-total p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* QR Code Section */
+        .qr-section {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 1rem auto;
+            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-nav {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .admin-nav-links {
+                flex-direction: column;
+                margin-bottom: 1rem;
+            }
+
+            .admin-nav a {
+                margin: 0.25rem 0;
+            }
+
+            .admin-user {
+                margin-top: 1rem;
+                justify-content: flex-end;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .admin-main {
+                padding: 1rem;
+            }
+
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .action-btns {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">QR Food Ordering - Admin Dashboard</div>
+    </header>
+
+    <!-- Admin Navigation -->
+    <!-- <nav class="admin-nav">
+        <div class="admin-nav-links">
+            <a href="admin-menu.html" ><i class="fas fa-utensils"></i> Menu Management</a>
+            <a href="admin-orders.html"><i class="fas fa-clipboard-list"></i> Order Management</a>
+        </div>
+        
+    </nav> -->
+
+    <!-- Admin Container -->
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <h3 class="sidebar-title">Quick Actions</h3>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href='add-menu-item.php' class="sidebar-link" id="sidebar-add-menu">
+                        <i class="fas fa-plus"></i>Update Menu Items
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#add-category" class="sidebar-link" id="sidebar-add-category">
+                        <i class="fas fa-tags"></i> Activity Log
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#settings" class="sidebar-link">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1 class="page-title">Restaurant Overview</h1>
+            </div>
+            <br>
+            <!-- Dashboard Cards -->
+            <div class="dashboard-cards">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">TODAY'S ORDERS</span>
+                        <i class="fas fa-clipboard-list card-icon"></i>
+                    </div>
+                    <div class="card-value">42</div>
+                    <div class="card-stats"><i class="fas fa-arrow-up"></i> 8 from yesterday</div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">ACTIVE TABLES</span>
+                        <i class="fas fa-chair card-icon"></i>
+                    </div>
+                    <div class="card-value">12</div>
+                    <div class="card-stats"><i class="fas fa-circle"></i> 48% occupancy</div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">TODAY'S REVENUE</span>
+                        <i class="fas fa-money-bill-wave card-icon"></i>
+                    </div>
+                    <div class="card-value">Rs. 85,750</div>
+                    <div class="card-stats"><i class="fas fa-arrow-up"></i> 15% from yesterday</div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">PENDING ORDERS</span>
+                        <i class="fas fa-clock card-icon"></i>
+                    </div>
+                    <div class="card-value">7</div>
+                    <div class="card-stats down"><i class="fas fa-arrow-down"></i> 3 from last hour</div>
+                </div>
+            </div>
+
+            <!-- Additional Stats Cards -->
+            <div class="dashboard-cards">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Menu Items</span>
+                        <i class="fas fa-utensils card-icon"></i>
+                    </div>
+                    <div class="card-value">58</div>
+                    <a href="admin-menu.html" class="btn btn-secondary">Manage Menu</a>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Categories</span>
+                        <i class="fas fa-tags card-icon"></i>
+                    </div>
+                    <div class="card-value">8</div>
+                    <a href="admin-menu.html" class="btn btn-secondary">Manage Categories</a>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Dining Tables</span>
+                        <i class="fas fa-chair card-icon"></i>
+                    </div>
+                    <div class="card-value">25</div>
+                    <a href="admin-tables.html" class="btn btn-secondary">View Tables</a>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Average Order Value</span>
+                        <i class="fas fa-shopping-basket card-icon"></i>
+                    </div>
+                    <div class="card-value">Rs. 2,042</div>
+                    <div class="card-stats"><i class="fas fa-arrow-up"></i> 5% from last week</div>
+                </div>
+            </div>
+
+            <!-- Recent Orders Table -->
+            <div class="admin-table-container">
+                <div class="table-header">
+                    <h2 class="section-title">Recent Orders</h2>
+                    <div>
+                        <a href="#" class="btn btn-secondary"><i class="fas fa-filter"></i> Filter</a>
+                        <a href="#" class="btn btn-info"><i class="fas fa-download"></i> Export</a>
+                    </div>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Table</th>
+                            <th>Items</th>
+                            <th>Total (Rs.)</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#ORD-1025</td>
+                            <td>T12</td>
+                            <td>3 items</td>
+                            <td>1,850</td>
+                            <td><span class="status status-ready">Ready</span></td>
+                            <td class="action-btns">
+                                <a href="#" class="btn btn-success"><i class="fas fa-check"></i> Serve</a>
+                                <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-1024</td>
+                            <td>T08</td>
+                            <td>5 items</td>
+                            <td>3,250</td>
+                            <td><span class="status status-preparing">Preparing</span></td>
+                            <td class="action-btns">
+                                <a href="#" class="btn btn-success"><i class="fas fa-check"></i> Ready</a>
+                                <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-1023</td>
+                            <td>T05</td>
+                            <td>2 items</td>
+                            <td>1,200</td>
+                            <td><span class="status status-pending">Pending</span></td>
+                            <td class="action-btns">
+                                <a href="#" class="btn btn-success"><i class="fas fa-utensils"></i> Start</a>
+                                <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-1022</td>
+                            <td>T15</td>
+                            <td>4 items</td>
+                            <td>2,750</td>
+                            <td><span class="status status-delivered">Delivered</span></td>
+                            <td class="action-btns">
+                                <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Menu Item Modal -->
+    <!-- <div class="modal" id="menu-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Menu Item</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="menu-form">
+                    <div class="form-group">
+                        <label for="item-name">Item Name</label>
+                        <input type="text" id="item-name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="item-category">Category</label>
+                            <select id="item-category" required>
+                                <option value="">Select Category</option>
+                                <option value="appetizers">Appetizers</option>
+                                <option value="main-courses">Main Courses</option>
+                                <option value="desserts">Desserts</option>
+                                <option value="beverages">Beverages</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-price">Price (Rs.)</label>
+                            <input type="number" id="item-price" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-description">Description</label>
+                        <textarea id="item-description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-image">Image URL</label>
+                        <input type="text" id="item-image" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-status">Status</label>
+                        <select id="item-status" required>
+                            <option value="available">Available</option>
+                            <option value="unavailable">Unavailable</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal">Cancel</button>
+                <button class="btn" id="save-menu-item">Save Item</button>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Generate QR Modal -->
+    <div class="modal" id="qr-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Generate New QR Code</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="qr-form">
+                    <div class="form-group">
+                        <label for="qr-table">Table Number</label>
+                        <select id="qr-table" required>
+                            <option value="">Select Table</option>
+                            <option value="T01">Table 01</option>
+                            <option value="T02">Table 02</option>
+                            <option value="T03">Table 03</option>
+                            <option value="T04">Table 04</option>
+                        </select>
+                    </div>
+                    <div class="qr-section">
+                        <p>QR Code Preview for <span id="qr-table-preview">[Table Number]</span></p>
+                        <div class="qr-code">
+                            <i class="fas fa-qrcode fa-5x" style="color: var(--dark);"></i>
+                        </div>
+                        <p>Scan this QR code to access the menu and order</p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal">Cancel</button>
+                <button class="btn" id="download-qr"><i class="fas fa-download"></i> Download QR</button>
+                <button class="btn" id="generate-qr">Generate QR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div class="modal" id="order-modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Order Details - #ORD-1025</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="order-details">
+                    <p><strong>Table:</strong> T12</p>
+                    <p><strong>Time:</strong> Today, 12:45 PM</p>
+                    <p><strong>Status:</strong> <span class="status status-ready">Ready</span></p>
+                    
+                    <table class="order-items">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Chicken Burger</td>
+                                <td>1</td>
+                                <td>Rs. 650</td>
+                                <td>Rs. 650</td>
+                            </tr>
+                            <tr>
+                                <td>French Fries</td>
+                                <td>2</td>
+                                <td>Rs. 300</td>
+                                <td>Rs. 600</td>
+                            </tr>
+                            <tr>
+                                <td>Soft Drink</td>
+                                <td>2</td>
+                                <td>Rs. 300</td>
+                                <td>Rs. 600</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="order-total">
+                        <p><strong>Subtotal:</strong> Rs. 1,850</p>
+                        <p><strong>Tax (10%):</strong> Rs. 185</p>
+                        <p><strong>Total:</strong> Rs. 2,035</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal">Close</button>
+                <button class="btn btn-success" id="mark-served"><i class="fas fa-check"></i> Mark as Served</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Action</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message">Are you sure you want to perform this action?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal">Cancel</button>
+                <button class="btn btn-danger" id="confirm-action">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Modal functionality
+            const modals = {
+                menu: document.getElementById('menu-modal'),
+                qr: document.getElementById('qr-modal'),
+                order: document.getElementById('order-modal'),
+                confirm: document.getElementById('confirm-modal')
+            };
+
+            const openModalButtons = {
+                menu: document.getElementById('sidebar-add-menu'),
+                qr: document.getElementById('sidebar-generate-qr')
+            };
+
+            const closeModalButtons = document.querySelectorAll('.close-modal');
+
+            // Open modals
+            Object.entries(openModalButtons).forEach(([type, button]) => {
+                if (button) {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        modals[type].style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                    });
+                }
+            });
+
+            // View order details
+            const viewOrderButtons = document.querySelectorAll('.btn-secondary .fa-eye').forEach(icon => {
+                icon.closest('a').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    modals.order.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            // Close modals
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    Object.values(modals).forEach(modal => {
+                        modal.style.display = 'none';
+                    });
+                    document.body.style.overflow = 'auto';
+                });
+            });
+
+            // Close when clicking outside modal content
+            window.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // Form submissions
+            document.getElementById('save-menu-item').addEventListener('click', function() {
+                alert('Menu item saved successfully!');
+                modals.menu.style.display = 'none';
+                document.getElementById('menu-form').reset();
+                document.body.style.overflow = 'auto';
+            });
+
+            document.getElementById('generate-qr').addEventListener('click', function() {
+                const tableNumber = document.getElementById('qr-table').value;
+                if (tableNumber) {
+                    document.getElementById('qr-table-preview').textContent = tableNumber;
+                    alert('QR code generated for ' + tableNumber);
+                } else {
+                    alert('Please select a table number');
+                }
+            });
+
+            document.getElementById('download-qr').addEventListener('click', function() {
+                alert('QR code downloaded!');
+            });
+
+            document.getElementById('mark-served').addEventListener('click', function() {
+                alert('Order marked as served!');
+                modals.order.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+
+            // Delete confirmation
+            const deleteButtons = document.querySelectorAll('.btn-danger');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const itemName = this.closest('tr').querySelector('td:first-child').textContent;
+                    document.getElementById('confirm-message').textContent = 
+                        `Are you sure you want to delete "${itemName}"? This action cannot be undone.`;
+                    modals.confirm.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Store reference to the item to be deleted
+                    document.getElementById('confirm-action').dataset.item = itemName;
+                });
+            });
+
+            document.getElementById('confirm-action').addEventListener('click', function() {
+                const itemName = this.dataset.item;
+                alert(`"${itemName}" has been deleted.`);
+                modals.confirm.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                
+                // In a real app, this would remove from the database and update the UI
+            });
+
+            // Highlight current page in navigation
+            const currentPage = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.admin-nav a');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Simulate loading data
+            setTimeout(() => {
+                const cards = document.querySelectorAll('.card-value');
+                cards[0].textContent = '47';
+                cards[1].textContent = '14';
+            }, 1500);
+
+            // Update QR preview when table is selected
+            document.getElementById('qr-table').addEventListener('change', function() {
+                const tableNumber = this.value;
+                if (tableNumber) {
+                    document.getElementById('qr-table-preview').textContent = tableNumber;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
